@@ -1,4 +1,6 @@
+// Header file(s) for watchdogSetup(), init(), delay(), and RingBuffer & UARTClass objects
 #include <Arduino.h>
+
 #include "print_asciz.h"
 
 extern "C" void application(const char * s);
