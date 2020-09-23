@@ -1,0 +1,16 @@
+CXX = g++
+CXX_FLAGS = -std=c++17
+OUTPUT = build
+
+melody.cpp : $(OUTPUT)/melody_generator.o
+	$(OUTPUT)/melody_generator.exe
+
+$(OUTPUT)/melody_generator.o:
+	make generator
+
+clean:
+	@echo ("Initiating lemon pledge . . .");
+	cd ..
+	del *.exe *.o
+	cd $(OUTPUT) && del *.o *.bin *.elf *.map *.d *.a *.exe
+	@echo ("I clean . . .");
