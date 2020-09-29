@@ -26,9 +26,13 @@ main( void )
 	Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 	display.clearDisplay();
 	// SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-	if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { 
+	if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
+	{ 
 		printf("SSD1306 allocation failed\n\r");
-		for(;;); // Don't proceed, loop forever
+		for(;;)
+		{
+			// "DON'T FORGET: YOU'RE HERE FOREVER" - Mr Burns
+		}
 	}
 
 	// REAL_TIME_CLOCK
@@ -62,13 +66,43 @@ main( void )
 	display.clearDisplay();
 	draw_clock_face(display, clock_face);
 
+	// CHANGE_TIME_BUTTONS
+	const int minute_button = 6;
+	const int hour_button = 7;
+	//
+	pinMode(minute_button, INPUT);
+	pinMode(hour_button, INPUT);
+	//
+	bool minute_state = 0;
+	bool hour_state = 0;
+	// LATCH
+	bool minute_pressed = 0;
+	bool hour_pressed = 0;
+	
 	for (;;)
 	{
-		if (rtc.getSeconds() != seconds)
+		minute_state = digitalRead(minute_button);
+		hour_state = digitalRead(hour_button);
+		//
+		minute_pressed = !minute_state ? 0 : minute_pressed;
+		hour_pressed = !hour_state ? 0 : hour_pressed;
+		//
+		if(minute_state && !minute_pressed)
 		{
-			draw_second(display, seconds, 0, lookup_table_s);
-			draw_minute(display, minutes,0, lookup_table_m);
-			draw_hour(display, hours,0, lookup_table_h);
+			minute_pressed = 1;
+			rtc.setMinutes( hour_state ? ( rtc.getMinutes() == 0 ? 59 : minutes-1 ) : ( rtc.getMinutes() == 59 ? 0 : minutes+1 ));
+		}
+		if(hour_state && !hour_pressed)
+		{
+			hour_pressed = 1;
+			rtc.setHours( minute_state ? ( rtc.getHours() == 1 ? 12 : hours-1 ) : ( rtc.getHours() == 12 ? 1 : hours+1 ) );
+		}
+		
+		if((rtc.getSeconds() != seconds) || hour_pressed || minute_pressed)
+		{
+			draw_clock_face(display, clock_face);
+			redraw_clock_face_elements(display);
+			//
 			draw_second(display, rtc.getSeconds(), 1, lookup_table_s);
 			draw_minute(display, rtc.getMinutes(), 1, lookup_table_m);
 			draw_hour(display, rtc.getHours(),1, lookup_table_h);
@@ -79,9 +113,8 @@ main( void )
 			minutes=rtc.getMinutes();
 			hours=rtc.getHours();
 			//
-			redraw_clock_face_elements(display);
+			display.clearDisplay();
 		}
-		
 	}
 	return 0;
 }
