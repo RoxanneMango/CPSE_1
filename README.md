@@ -1,5 +1,11 @@
 # CPSE_1
-CPSE_1 assignments
+
+## CPSE_1 assignments
+- 1_asciz
+- 2_melody
+- 3_oled
+- 4_decoder
+- 5_set
 
 ## Using:
 - tools:
