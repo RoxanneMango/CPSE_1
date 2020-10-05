@@ -1,4 +1,15 @@
 # CPSE_1
 CPSE_1 assignments
 
-Using the arm-none-eabi GCC & sam3x6e library for compiling; bossac for flashing to the Arduino Due.
+## Using:
+- tools:
+  - arm-none-eabi GCC
+  - BOSSAC
+  - Python3
+- libraries:
+  - sam 1.6.12
+  - Adafruit_BusIO
+  - Adafruit_SSD1306
+  - Adafruit-GFX-Library
+  - Catch2
+  - RTCDue
