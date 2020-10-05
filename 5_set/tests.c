@@ -4,6 +4,53 @@
 
 #include "set.h"
 
+TEST_CASE( "< <char 3>, 3>", "[set]" ) {
+
+	std::array<char, 3> a1 = {'a', 'a', 'a'};
+	std::array<char, 3> a2 = {'b', 'b', 'b'};
+	
+	std::array<char, 3> a3 = {'c', 'c', 'c'};
+	std::array<char, 3> a4 = {'d', 'd', 'd'};
+	
+	Set< std::array<char, 3> , 3> set;
+	set.add(a1);
+	set.add(a3);
+	
+	Set< std::array<char, 3> , 3> set2;
+	set2.add(a2);
+	set2.add(a4);
+	
+    REQUIRE( (set.array[0] > set2.array[0]) == false );		// {a a a} > {b b b} == (FALSE)
+    REQUIRE( (set2.array[0] > set.array[0]) == true );		// {b b b} > {a a a} == (TRUE)
+	
+	REQUIRE( set.max() == a3 );
+	REQUIRE( set.max() != a2 );
+	REQUIRE( set2.max() != a1 );
+	REQUIRE( set2.max() == a4 );
+	
+}
+
+TEST_CASE( "< <char 5>, 5>", "[set]" ) {
+
+	std::array<char, 5> a1 = {'a', 'b', 'c', 'd', 'e'};
+	std::array<char, 5> a2 = {'b', 'c', 'd', 'e', 'f'};
+	
+	Set<std::array<char, 5>, 5> set;
+	set.add(a1);
+	
+	Set<std::array<char, 5>, 5> set2;
+	set2.add(a2);
+	
+    REQUIRE( (set.array[0] > set2.array[0]) == false );		// {a a a} > {b b b} == (FALSE)
+    REQUIRE( (set2.array[0] > set.array[0]) == true );		// {b b b} > {a a a} == (TRUE)
+	
+	REQUIRE( set.max() == a1 );
+	REQUIRE( set.max() != a2 );
+	REQUIRE( set2.max() != a1 );
+	REQUIRE( set2.max() == a2 );
+	
+}
+
 TEST_CASE( "<char, 3>", "[set]" ) {
 	Set<char, 3> set;
 	REQUIRE( set.contains('a') == false );

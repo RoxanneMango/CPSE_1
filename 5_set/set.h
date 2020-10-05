@@ -7,10 +7,11 @@
 template< typename D, int S >
 class Set
 {
-private:
-	std::array<D, S> array = {0};
-	bool availableSpaces[S];
 public:
+
+	std::array<D, S> array;
+	bool availableSpaces[S];
+
 	Set()
 	{
 		for(int i = 0; i < S; ++i)
@@ -71,15 +72,7 @@ public:
 	}
 	D max()
 	{
-		D x = 0;
-		for(unsigned int i = 0; i < S; ++i)
-		{
-			if(!availableSpaces[i])
-			{
-				x = array[i];
-				break;
-			}
-		}
+		D x = getFirstElement();
 		for(unsigned int i = 0; i < S; ++i)
 		{
 			if(!availableSpaces[i])
@@ -102,6 +95,37 @@ public:
 			}
 		}
 	}
+	
+	D getFirstElement()
+	{
+		for(unsigned int i = 0; i < S; ++i)
+		{
+			if(!availableSpaces[i])
+			{
+				return array[i];
+			}
+		}		
+		return array[0];
+	}
+
+	bool operator > (std::array<D, S> & set)
+	{
+		D sum1 = set.getFirstElement();
+		D sum2 = getFirstElement();
+		for(int i = 1; i < S; ++i)
+		{
+			if(!availableSpaces[i])
+			{
+				sum1 += set.array[i];
+			}
+			if(!set.availableSpaces[i])
+			{
+				sum2 += array[i];
+			}
+		}
+		return (sum1 > sum2);
+	}
+	
 };
 
 #endif // SET_H
