@@ -19,3 +19,6 @@
   - Adafruit-GFX-Library
   - Catch2
   - RTCDue
+
+### Built using the adkit toolchain for the arduino due
+https://github.com/RoxanneMango/adkit
